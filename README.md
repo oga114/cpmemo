@@ -5,6 +5,7 @@
 
 ## Requirement
 cupertino_icons: ^1.0.2
+
 shared_preferences: ^2.2.0
 
 ## Usage
