@@ -3,12 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
-
   // テーマモードの初期値を設定
   static ThemeMode currentThemeMode = ThemeMode.light;
 
@@ -27,7 +25,7 @@ class MyApp extends StatelessWidget {
       themeMode: currentThemeMode, // 現在のテーマモードをセット
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('CPmemo'),
+          title: const Text('com.cpmemo'),
           actions: [
             // コピー＆ペーストボタンを追加
             IconButton(

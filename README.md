@@ -1,4 +1,4 @@
-# cpmemo
+# com.cpmemo
 
 ## Overview
 長文作成補助アプリ
