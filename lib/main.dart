@@ -6,15 +6,49 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // テーマモードの初期値を設定
-  static ThemeMode currentThemeMode = ThemeMode.light;
+  ThemeMode currentThemeMode = ThemeMode.light;
+
+  @override
+  void initState() {
+    super.initState();
+    // アプリ起動時にSharedPreferencesからテーマモードを読み込む
+    _loadMode();
+  }
+
+  //SharedPreferencesからテーマモードを読み込むメソッド
+  _loadMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? mode = prefs.getString('mode');
+    setState(() {
+      if (mode == 'dark') {
+        currentThemeMode = ThemeMode.dark;
+      } else {
+        currentThemeMode = ThemeMode.light;
+      }
+    });
+  }
+
+  // SharedPreferencesにテーマモードを保存するメソッド
+  _saveMode(ThemeMode mode) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String modeString = mode == ThemeMode.dark ? 'dark' : 'light';
+    await prefs.setString('mode', modeString);
+  }
 
   // テーマモードを変更するメソッド
-  static void setThemeMode(BuildContext context, ThemeMode mode) {
-    currentThemeMode = mode;
-    // MaterialAppを再構築してテーマモードを更新
-    runApp(MyApp());
+  void setThemeMode(ThemeMode mode) {
+    setState(() {
+      currentThemeMode = mode;
+    });
+    // モードを保存する
+    _saveMode(mode);
   }
 
   @override
@@ -56,7 +90,7 @@ class MyApp extends StatelessWidget {
                     ? ThemeMode.dark
                     : ThemeMode.light;
                 // 反転したテーマモードをセットする
-                setThemeMode(context, newThemeMode);
+                setThemeMode(newThemeMode);
               },
             ),
           ],
@@ -93,7 +127,7 @@ class _HalfScreenTextAreaState extends State<HalfScreenTextArea> {
     await prefs.setString('textData', text);
   }
 
-  // SharedPreferencesからデータを読み込むメソッド
+  //SharedPreferencesからデータを読み込むメソッド
   _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? text = prefs.getString('textData');
